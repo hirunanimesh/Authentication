@@ -53,7 +53,19 @@ class AuthController {
         secure: false,
         sameSite: "none",
       });
-      return res.status(200).json({ message: "Login successful" });
+     
+
+      console.log("Login successful for user:", user.username);
+      return res.status(200).json({ 
+        message: "Login successful" ,
+        user: {
+          id: user.id,
+          email: user.email,
+          username: user.username,
+          role: user.role
+        }
+      });
+
     } catch (error) {
       console.error("Error during login:", error);
       return res.status(500).json({ message: "Internal server error" });
@@ -65,6 +77,7 @@ class AuthController {
     const { email, password, role } = req.body;
     try {
       const user = await authmodel.findbyemail(email);
+      console.log("User found:", user);
 
       if (!user || !(await bcrypt.compare(password, user.password))) {
         console.log("Invalid email or password");
@@ -94,7 +107,16 @@ class AuthController {
         secure: false,
         sameSite: "none",
       });
-      return res.status(200).json({ message: "Login successful" });
+      
+       return res.status(200).json({ 
+        message: "Login successful" ,
+        user: {
+          id: user.id,
+          email: user.email,
+          username: user.username,
+          role: user.role
+        }
+      });
     } catch (error) {
       console.error("Error during login:", error);
       return res.status(500).json({ message: "Internal server error" });
