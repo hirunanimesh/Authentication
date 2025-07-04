@@ -30,14 +30,14 @@ class authmodel {
     }
 
     static async get_students() {
-        const query = 'SELECT id, email, username, role FROM users WHERE role = "student"';
-        const [rows] = await pool.execute(query);
+        const query = 'SELECT id, email, username, role FROM users WHERE role = ?';
+        const [rows] = await pool.execute(query, ['student']);
         return rows;
     }
 
     static async get_teachers() {
-        const query = 'SELECT id, email, username, role FROM users WHERE role = "teacher"';
-        const [rows] = await pool.execute(query);
+        const query = 'SELECT id, email, username, role FROM users WHERE role = ?';
+        const [rows] = await pool.execute(query, ['teacher']);
         console.log(rows);
         return rows;
     }
