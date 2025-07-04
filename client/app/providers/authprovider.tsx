@@ -18,14 +18,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const { username, email, role } = response.data;
         dispatch(setUser({ username, email, role }));
       } catch (error) {
-        console.warn('User not authenticated')
+        console.error('[AuthProvider] Error fetching user:', error);
+        // Optionally, you can dispatch an action to set an error state
+        // dispatch(setError(error.message));
       } finally {
         setHydrated(true)
       }
     }
 
     fetchUser()
-  }, [])
+  }, [dispatch])
 
   if (!hydrated) return <div>Loading...</div>
 

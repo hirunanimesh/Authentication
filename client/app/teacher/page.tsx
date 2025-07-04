@@ -11,7 +11,16 @@ interface Students {
 }
 
 const TeacherPage = () => {
-  const name = useSelector((state: any) => state.user.username);
+  // Define RootState according to your Redux store structure
+  interface RootState {
+    user: {
+      username: string;
+      // add other user properties if needed
+    };
+    // add other state slices if needed
+  }
+
+  const name = useSelector((state: RootState) => state.user.username);
   const [students, setStudents] = useState<Students[]>([]);
   const [loading, setLoading] = useState(false);
   const [showStudents, setShowStudents] = useState(false);
