@@ -134,6 +134,26 @@ class AuthController {
       return res.status(500).json({ message: "Internal server error" });
     }
   }
+
+  static async get_students(req, res) {
+    try {
+      const students = await authmodel.get_students();
+      return res.status(200).json(students);
+    } catch (error) {
+      console.error("Error fetching students:", error);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+  }
+
+  static async get_teachers(req, res) {
+    try {
+      const teachers = await authmodel.get_teachers();
+      return res.status(200).json(teachers);
+    } catch (error) {
+      console.error("Error fetching teachers:", error);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+  }
 }
 
 module.exports = AuthController;
