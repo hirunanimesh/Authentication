@@ -1,5 +1,6 @@
 'use client';
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { Eye, EyeOff, User, Mail, Lock, UserCheck } from 'lucide-react';
 import api from '../../constants/api'; // Adjust the import path as necessary
 
@@ -115,6 +116,7 @@ const RegistrationForm: React.FC = () => {
     } catch (error) {
       setSubmitStatus('error');
       setErrors({ email: 'Network error. Please try again.' });
+      console.error('Registration error:', error);
     } finally {
       setIsLoading(false);
     }
@@ -283,9 +285,9 @@ const RegistrationForm: React.FC = () => {
         <div className="mt-8 text-center">
           <p className="text-gray-600">
             Already have an account?{' '}
-            <a href="/" className="text-blue-600 hover:text-blue-700 font-medium">
+            <Link href="/" className="text-blue-600 hover:text-blue-700 font-medium">
               Sign in here
-            </a>
+            </Link>
           </p>
         </div>
       </div>

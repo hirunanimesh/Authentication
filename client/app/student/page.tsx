@@ -11,7 +11,14 @@ interface Teacher {
 }
 
 const StudentPage = () => {
-  const name = useSelector((state: any) => state.user.username); 
+  interface RootState {
+    user: {
+      username: string;
+      // add other user properties if needed
+    };
+  }
+  
+    const name = useSelector((state: RootState) => state.user.username); 
   const [teachers, setTeachers] = useState<Teacher[]>([]);
   const [loading, setLoading] = useState(false);
   const [showTeachers, setShowTeachers] = useState(false);
