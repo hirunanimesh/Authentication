@@ -28,6 +28,19 @@ class authmodel {
         }
         return null;
     }
+
+    static async get_students() {
+        const query = 'SELECT id, email, username, role FROM users WHERE role = "student"';
+        const [rows] = await pool.execute(query);
+        return rows;
+    }
+
+    static async get_teachers() {
+        const query = 'SELECT id, email, username, role FROM users WHERE role = "teacher"';
+        const [rows] = await pool.execute(query);
+        console.log(rows);
+        return rows;
+    }
 }
 
 module.exports = authmodel;
