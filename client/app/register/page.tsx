@@ -22,7 +22,7 @@ const RegistrationForm: React.FC = () => {
     email: '',
     password: '',
     username: '',
-    role: 'user'
+    role: ''
   });
   
   const [errors, setErrors] = useState<FormErrors>({});
@@ -92,6 +92,8 @@ const RegistrationForm: React.FC = () => {
     setSubmitStatus('idle');
     
     try {
+    
+
       const response = await api.post('auth/signup',{
         email: formData.email,
         password: formData.password,
@@ -158,7 +160,7 @@ const RegistrationForm: React.FC = () => {
                 name="username"
                 value={formData.username}
                 onChange={handleInputChange}
-                className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
+                className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-black ${
                   errors.username ? 'border-red-500' : 'border-gray-300'
                 }`}
                 placeholder="Enter your username"
@@ -185,7 +187,7 @@ const RegistrationForm: React.FC = () => {
                 name="email"
                 value={formData.email}
                 onChange={handleInputChange}
-                className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
+                className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-black ${
                   errors.email ? 'border-red-500' : 'border-gray-300'
                 }`}
                 placeholder="Enter your email"
@@ -212,7 +214,7 @@ const RegistrationForm: React.FC = () => {
                 name="password"
                 value={formData.password}
                 onChange={handleInputChange}
-                className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
+                className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-black ${
                   errors.password ? 'border-red-500' : 'border-gray-300'
                 }`}
                 placeholder="Create a strong password"
@@ -244,7 +246,7 @@ const RegistrationForm: React.FC = () => {
               name="role"
               value={formData.role}
               onChange={handleInputChange}
-              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
+              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-black ${
                 errors.role ? 'border-red-500' : 'border-gray-300'
               }`}
               aria-describedby={errors.role ? 'role-error' : undefined}
