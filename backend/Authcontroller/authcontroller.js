@@ -2,7 +2,6 @@ const authmodel = require("../AuthModel/authmodel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-
 class AuthController {
   static async signup(req, res) {
     const { email, password, username, role } = req.body;
@@ -16,6 +15,19 @@ class AuthController {
       return res.status(400).json({ message: "Error creating user" });
     } catch (error) {
       console.error("Error during signup:", error);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+  }
+
+  static async get_me(req, res) {
+    try {
+      const user = await authmodel.findbyemail(req.user.email);
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      return res.status(200).json(user);
+    } catch (error) {
+      console.error("Error fetching user:", error);
       return res.status(500).json({ message: "Internal server error" });
     }
   }
@@ -46,32 +58,29 @@ class AuthController {
       res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
         secure: false,
-        sameSite: "none",
+        sameSite: "lax",
       });
       res.cookie("token", token, {
         httpOnly: true,
         secure: false,
-        sameSite: "none",
+        sameSite: "lax",
       });
-     
 
       console.log("Login successful for user:", user.username);
-      return res.status(200).json({ 
-        message: "Login successful" ,
+      return res.status(200).json({
+        message: "Login successful",
         user: {
           id: user.id,
           email: user.email,
           username: user.username,
-          role: user.role
-        }
+          role: user.role,
+        },
       });
-
     } catch (error) {
       console.error("Error during login:", error);
       return res.status(500).json({ message: "Internal server error" });
     }
   }
-
 
   static async teacher_login(req, res) {
     const { email, password, role } = req.body;
@@ -100,22 +109,22 @@ class AuthController {
       res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
         secure: false,
-        sameSite: "none",
+        sameSite: "lax",
       });
       res.cookie("token", token, {
         httpOnly: true,
         secure: false,
-        sameSite: "none",
+        sameSite: "lax",
       });
-      
-       return res.status(200).json({ 
-        message: "Login successful" ,
+
+      return res.status(200).json({
+        message: "Login successful",
         user: {
           id: user.id,
           email: user.email,
           username: user.username,
-          role: user.role
-        }
+          role: user.role,
+        },
       });
     } catch (error) {
       console.error("Error during login:", error);
@@ -137,6 +146,7 @@ class AuthController {
 
   static async get_students(req, res) {
     try {
+      
       const students = await authmodel.get_students();
       return res.status(200).json(students);
     } catch (error) {
