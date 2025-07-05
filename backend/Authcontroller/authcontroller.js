@@ -57,13 +57,13 @@ class AuthController {
       // Set the refresh token in a cookie
       res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
-        secure: false,
-        sameSite: "lax",
+        secure: true,
+        sameSite: "none",
       });
       res.cookie("token", token, {
         httpOnly: true,
-        secure: false,
-        sameSite: "lax",
+        secure: true,
+        sameSite: "none",
       });
 
       console.log("Login successful for user:", user.username);
@@ -108,13 +108,13 @@ class AuthController {
       // Set the refresh token in a cookie
       res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
-        secure: false,
-        sameSite: "lax",
+        secure: true,
+        sameSite: "none",
       });
       res.cookie("token", token, {
         httpOnly: true,
-        secure: false,
-        sameSite: "lax",
+        secure: true,
+        sameSite: "none",
       });
 
       return res.status(200).json({
