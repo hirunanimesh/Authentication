@@ -2,7 +2,13 @@ const pool = require('../db'); // Import the database connection pool
 const bcrypt = require('bcrypt');
 class authmodel {
     static async signup(email , password , username , role){
-        const hashedPassword = await bcrypt.hash(password, 10);
+        let hashedPassword = null;
+        if (password) { // Only hash if a password is provided
+            hashedPassword = await bcrypt.hash(password, 10);
+        }
+        // If password is null (e.g., Google signup), hashedPassword will remain null.
+        // This assumes the 'password' column in the 'users' table is NULLABLE.
+
         const query = `INSERT INTO users (email, password, username, role) VALUES (?, ?, ?, ?)`;
         const values = [email, hashedPassword, username, role];
         
