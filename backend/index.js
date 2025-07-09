@@ -6,9 +6,8 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const authRoutes = require('./Routes/authRouts'); // import auth routes
-const passport = require('passport');
+const passport = require('./Config/passport');
 const session = require('express-session');
-require('./Config/passport'); // import passport configuration
 
 app.use(cookieParser());
 

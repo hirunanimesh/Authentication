@@ -301,17 +301,6 @@ const RegistrationForm: React.FC = () => {
               "Create Account"
             )}
           </button>
-          <a href="http://localhost:5000/api/auth/google/student">
-            <button className="bg-red-500 text-white px-4 py-2 rounded">
-              Login with Google as Student
-            </button>
-          </a>
-
-          <a href="http://localhost:5000/api/auth/google/teacher">
-            <button className="bg-green-500 text-white px-4 py-2 rounded">
-              Login with Google as Teacher
-            </button>
-          </a>
         </div>
 
         {/* Sign In Link */}

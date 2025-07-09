@@ -19,13 +19,16 @@ router.get('/me', authmiddleware(['student', 'teacher']), AuthController.get_me)
 
 //new google auth routers
 router.get('/google/student', (req, res, next) => {
+    console.log("google student route hit");
   req.session.role = 'student';
+  console.log(req.session.role);
   next();
 }, passport.authenticate('google', { scope: ['profile', 'email'] }));
 
 router.get('/google/teacher', (req, res, next) => {
+ 
   req.session.role = 'teacher';
-  console.log(req.session.role);
+
   next();
 }, passport.authenticate('google', { scope: ['profile', 'email'] }));
 
@@ -34,6 +37,10 @@ router.get('/google/callback',
   passport.authenticate('google', { failureRedirect: '/' }),
   (req, res) => {
     const user = req.user;
+
+     console.log("✅ Callback route hit");
+    console.log("🔐 User:", req.user);
+
     const token = jwt.sign({ email: user.email, role: user.role, username: user.username }, process.env.JWT_SECRET, {
       expiresIn: "1h"
     });
@@ -43,8 +50,11 @@ router.get('/google/callback',
       secure: true,
       sameSite: "none",
     });
-
-    res.redirect(`${process.env.CLIENT_URL}/student`);
+    if (user.role === 'student') {
+      res.redirect(`${process.env.CLIENT_URL}/student`);
+    } else if (user.role === 'teacher') {
+      res.redirect(`${process.env.CLIENT_URL}/teacher`);
+    }
   }
 );
 
