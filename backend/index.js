@@ -6,6 +6,9 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const authRoutes = require('./Routes/authRouts'); // import auth routes
+const passport = require('passport');
+const session = require('express-session');
+require('./Config/passport'); // import passport configuration
 
 app.use(cookieParser());
 
@@ -14,6 +17,24 @@ app.use(cors({
   credentials: true, // Allow credentials (cookies, authorization headers, etc.)
 }));
 app.use(express.json());
+
+
+// Configure session middleware
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'your-secret-key', // Add this to your .env file
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: false, // Set to true if using HTTPS
+    httpOnly: true,
+    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+  }
+}));
+
+// Initialize Passport
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 
 app.use('/api/auth', authRoutes);

@@ -2,7 +2,7 @@ const pool = require('../db'); // Import the database connection pool
 const bcrypt = require('bcrypt');
 class authmodel {
     static async signup(email , password , username , role){
-        const hashedPassword = await bcrypt.hash(password, 10);
+         const hashedPassword = password ? await bcrypt.hash(password, 10) : null;
         const query = `INSERT INTO users (email, password, username, role) VALUES (?, ?, ?, ?)`;
         const values = [email, hashedPassword, username, role];
         
