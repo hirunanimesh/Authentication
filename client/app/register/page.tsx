@@ -1,8 +1,8 @@
-'use client';
-import React, { useState } from 'react';
-import Link from 'next/link';
-import { Eye, EyeOff, User, Mail, Lock, UserCheck } from 'lucide-react';
-import api from '../../constants/api'; // Adjust the import path as necessary
+"use client";
+import React, { useState } from "react";
+import Link from "next/link";
+import { Eye, EyeOff, User, Mail, Lock, UserCheck } from "lucide-react";
+import api from "../../constants/api"; // Adjust the import path as necessary
 
 interface FormData {
   email: string;
@@ -20,103 +20,107 @@ interface FormErrors {
 
 const RegistrationForm: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
-    email: '',
-    password: '',
-    username: '',
-    role: ''
+    email: "",
+    password: "",
+    username: "",
+    role: "",
   });
-  
+
   const [errors, setErrors] = useState<FormErrors>({});
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [submitStatus, setSubmitStatus] = useState<
+    "idle" | "success" | "error"
+  >("idle");
 
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
-    
+
     // Email validation
     if (!formData.email) {
-      newErrors.email = 'Email is required';
+      newErrors.email = "Email is required";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email address';
+      newErrors.email = "Please enter a valid email address";
     }
-    
+
     // Password validation
     if (!formData.password) {
-      newErrors.password = 'Password is required';
+      newErrors.password = "Password is required";
     } else if (formData.password.length < 8) {
-      newErrors.password = 'Password must be at least 8 characters long';
+      newErrors.password = "Password must be at least 8 characters long";
     } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(formData.password)) {
-      newErrors.password = 'Password must contain at least one uppercase letter, one lowercase letter, and one number';
+      newErrors.password =
+        "Password must contain at least one uppercase letter, one lowercase letter, and one number";
     }
-    
+
     // Username validation
     if (!formData.username) {
-      newErrors.username = 'Username is required';
+      newErrors.username = "Username is required";
     } else if (formData.username.length < 3) {
-      newErrors.username = 'Username must be at least 3 characters long';
+      newErrors.username = "Username must be at least 3 characters long";
     } else if (!/^[a-zA-Z0-9_]+$/.test(formData.username)) {
-      newErrors.username = 'Username can only contain letters, numbers, and underscores';
+      newErrors.username =
+        "Username can only contain letters, numbers, and underscores";
     }
-    
+
     // Role validation
     if (!formData.role) {
-      newErrors.role = 'Please select a role';
+      newErrors.role = "Please select a role";
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
-    
+
     // Clear error when user starts typing
     if (errors[name as keyof FormErrors]) {
-      setErrors(prev => ({
+      setErrors((prev) => ({
         ...prev,
-        [name]: undefined
+        [name]: undefined,
       }));
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!validateForm()) return;
-    
-    setIsLoading(true);
-    setSubmitStatus('idle');
-    
-    try {
-    
 
-      const response = await api.post('auth/signup',{
+    if (!validateForm()) return;
+
+    setIsLoading(true);
+    setSubmitStatus("idle");
+
+    try {
+      const response = await api.post("auth/signup", {
         email: formData.email,
         password: formData.password,
         username: formData.username,
-        role: formData.role
-      })
-      
+        role: formData.role,
+      });
+
       const data = response.data;
-      
+
       if (response.status === 201) {
-        setSubmitStatus('success');
-        setFormData({ email: '', password: '', username: '', role: 'user' });
+        setSubmitStatus("success");
+        setFormData({ email: "", password: "", username: "", role: "user" });
       } else {
-        setSubmitStatus('error');
+        setSubmitStatus("error");
         if (data.message) {
           setErrors({ email: data.message });
         }
       }
     } catch (error) {
-      setSubmitStatus('error');
-      setErrors({ email: 'Network error. Please try again.' });
-      console.error('Registration error:', error);
+      setSubmitStatus("error");
+      setErrors({ email: "Network error. Please try again." });
+      console.error("Registration error:", error);
     } finally {
       setIsLoading(false);
     }
@@ -130,13 +134,11 @@ const RegistrationForm: React.FC = () => {
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
             Create Your Account
           </h1>
-          <p className="text-gray-600">
-            Join us today and start your journey
-          </p>
+          <p className="text-gray-600">Join us today and start your journey</p>
         </div>
 
         {/* Success Message */}
-        {submitStatus === 'success' && (
+        {submitStatus === "success" && (
           <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
             <div className="flex items-center">
               <UserCheck className="h-5 w-5 text-green-600 mr-2" />
@@ -151,7 +153,10 @@ const RegistrationForm: React.FC = () => {
         <div className="space-y-6">
           {/* Username Field */}
           <div>
-            <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2">
+            <label
+              htmlFor="username"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
               Username
             </label>
             <div className="relative">
@@ -163,10 +168,12 @@ const RegistrationForm: React.FC = () => {
                 value={formData.username}
                 onChange={handleInputChange}
                 className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-black ${
-                  errors.username ? 'border-red-500' : 'border-gray-300'
+                  errors.username ? "border-red-500" : "border-gray-300"
                 }`}
                 placeholder="Enter your username"
-                aria-describedby={errors.username ? 'username-error' : undefined}
+                aria-describedby={
+                  errors.username ? "username-error" : undefined
+                }
               />
             </div>
             {errors.username && (
@@ -178,7 +185,10 @@ const RegistrationForm: React.FC = () => {
 
           {/* Email Field */}
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
               Email Address
             </label>
             <div className="relative">
@@ -190,10 +200,10 @@ const RegistrationForm: React.FC = () => {
                 value={formData.email}
                 onChange={handleInputChange}
                 className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-black ${
-                  errors.email ? 'border-red-500' : 'border-gray-300'
+                  errors.email ? "border-red-500" : "border-gray-300"
                 }`}
                 placeholder="Enter your email"
-                aria-describedby={errors.email ? 'email-error' : undefined}
+                aria-describedby={errors.email ? "email-error" : undefined}
               />
             </div>
             {errors.email && (
@@ -205,30 +215,39 @@ const RegistrationForm: React.FC = () => {
 
           {/* Password Field */}
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
               Password
             </label>
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
               <input
-                type={showPassword ? 'text' : 'password'}
+                type={showPassword ? "text" : "password"}
                 id="password"
                 name="password"
                 value={formData.password}
                 onChange={handleInputChange}
                 className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-black ${
-                  errors.password ? 'border-red-500' : 'border-gray-300'
+                  errors.password ? "border-red-500" : "border-gray-300"
                 }`}
                 placeholder="Create a strong password"
-                aria-describedby={errors.password ? 'password-error' : undefined}
+                aria-describedby={
+                  errors.password ? "password-error" : undefined
+                }
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                aria-label={showPassword ? 'Hide password' : 'Show password'}
+                aria-label={showPassword ? "Hide password" : "Show password"}
               >
-                {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                {showPassword ? (
+                  <EyeOff className="h-5 w-5" />
+                ) : (
+                  <Eye className="h-5 w-5" />
+                )}
               </button>
             </div>
             {errors.password && (
@@ -240,7 +259,10 @@ const RegistrationForm: React.FC = () => {
 
           {/* Role Field */}
           <div>
-            <label htmlFor="role" className="block text-sm font-medium text-gray-700 mb-2">
+            <label
+              htmlFor="role"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
               Role
             </label>
             <select
@@ -249,9 +271,9 @@ const RegistrationForm: React.FC = () => {
               value={formData.role}
               onChange={handleInputChange}
               className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-black ${
-                errors.role ? 'border-red-500' : 'border-gray-300'
+                errors.role ? "border-red-500" : "border-gray-300"
               }`}
-              aria-describedby={errors.role ? 'role-error' : undefined}
+              aria-describedby={errors.role ? "role-error" : undefined}
             >
               <option value="student">Student</option>
               <option value="teacher">Teacher</option>
@@ -276,7 +298,7 @@ const RegistrationForm: React.FC = () => {
                 Creating Account...
               </div>
             ) : (
-              'Create Account'
+              "Create Account"
             )}
           </button>
         </div>
@@ -284,8 +306,11 @@ const RegistrationForm: React.FC = () => {
         {/* Sign In Link */}
         <div className="mt-8 text-center">
           <p className="text-gray-600">
-            Already have an account?{' '}
-            <Link href="/" className="text-blue-600 hover:text-blue-700 font-medium">
+            Already have an account?{" "}
+            <Link
+              href="/"
+              className="text-blue-600 hover:text-blue-700 font-medium"
+            >
               Sign in here
             </Link>
           </p>
