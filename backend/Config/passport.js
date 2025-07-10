@@ -32,5 +32,18 @@ passport.use(new GoogleStrategy({
   }
 }));
 
+passport.serializeUser((user, done) => {
+  done(null, user.email);
+});
+
+passport.deserializeUser(async (email, done) => {
+  try {
+    const user = await authmodel.findbyemail(email);
+    done(null, user);
+  } catch (err) {
+    console.error("❌ Error during deserialization:", err);
+    done(err, null);
+  }
+});
 
 module.exports = passport;
