@@ -36,6 +36,7 @@ app.use(passport.session());
 
 
 
+
 app.use('/api/auth', authRoutes);
 
 // Start server

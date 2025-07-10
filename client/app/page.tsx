@@ -361,7 +361,7 @@ export default function Home() {
                 </a>
 
                 <a
-                  href={`${process.env.NEXT_PUBLIC_API_URL}/auth/google/teacher`}
+                  href={`${process.env.NEXT_PUBLIC_API_URL}/api/auth/google/teacher`}
                   className="block"
                 >
                   <button className="w-full bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-4 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 flex items-center justify-center">
