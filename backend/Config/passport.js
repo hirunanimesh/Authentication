@@ -32,14 +32,5 @@ passport.use(new GoogleStrategy({
   }
 }));
 
-// Serialize user for session
-passport.serializeUser((user, done) => {
-  done(null, user);
-});
-
-// Deserialize user from session
-passport.deserializeUser((user, done) => {
-  done(null, user);
-});
 
 module.exports = passport;
