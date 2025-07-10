@@ -14,21 +14,16 @@ router.get('/students',authmiddleware(['teacher']), AuthController.get_students)
 router.get('/teachers', authmiddleware(['student']), AuthController.get_teachers);
 router.get('/me', authmiddleware(['student', 'teacher']), AuthController.get_me);
 
-
-
-
 //new google auth routers
 router.get('/google/student', (req, res, next) => {
-    console.log("google student route hit");
+  console.log("google student route hit");
   req.session.role = 'student';
   console.log(req.session.role);
   next();
 }, passport.authenticate('google', { scope: ['profile', 'email'] }));
 
 router.get('/google/teacher', (req, res, next) => {
- 
   req.session.role = 'teacher';
-
   next();
 }, passport.authenticate('google', { scope: ['profile', 'email'] }));
 
